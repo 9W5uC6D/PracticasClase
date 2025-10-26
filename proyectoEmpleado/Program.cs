@@ -44,9 +44,11 @@ class Program
     static void mostrarEmpleados(Empleado[] empleados, DateTime[] fechasNacimiento)
     {
         Console.WriteLine("\nDatos de los empleados ingresados:");
+        Console.WriteLine("=====================================");
+        Console.WriteLine($"{"CI",-10}\t{"Nombre",-20}\t{"Edad",-5}");
         for (int i = 0; i < empleados.Length; i++)
         {
-            Console.WriteLine($"CI: {empleados[i].Ci}, Nombre: {empleados[i].Nombre}, edad: {DateTime.Now.Year - fechasNacimiento[i].Year} años");
+            Console.WriteLine($"{empleados[i].Ci,-10}\t{empleados[i].Nombre,-20}\t{DateTime.Now.Year - fechasNacimiento[i].Year,-5}");
         }
     }
 
