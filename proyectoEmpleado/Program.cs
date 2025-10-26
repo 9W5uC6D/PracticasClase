@@ -4,7 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Ingrese la cantidad de empleados: ");
+        Console.Write("Ingrese la cantidad de empleados: ");
         uint cantidad = Convert.ToUInt32(Console.ReadLine());
 
         Empleado[] empleados = new Empleado[cantidad];
@@ -19,7 +19,7 @@ class Program
     {
         for (int i = 0; i < empleados.Length; i++)
         {
-            Console.WriteLine($"Ingrese los datos del empleado {i + 1}:");
+            Console.WriteLine($"\nIngrese los datos del empleado {i + 1}:");
 
             Console.Write("CI: ");
             uint ci = Convert.ToUInt32(Console.ReadLine());
