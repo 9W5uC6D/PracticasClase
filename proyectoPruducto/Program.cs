@@ -6,20 +6,33 @@ class Program
 {
     static void Main(string[] args)
     {
+
+        string nombre;
+        bool esDatoValido;
+        DateTime fechaVencimientoInput;
         Console.WriteLine("\t--- Ingresa los datos del producto ---");
         Console.Write("Nombre: ");
-        string? nombre = Console.ReadLine()?.ToUpper();
-        Console.WriteLine($"Ingrese la fecha de vencimiento del producto \" {nombre} \"");
-        Console.Write("Año: ");
-        int año = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Mes: ");
-        int mes = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Día: ");
-        int dia = Convert.ToInt32(Console.ReadLine());
-        DateTime fechaVencimiento = new DateTime(año, mes, dia);
+        nombre = Console.ReadLine()?.ToUpper();
+        do
+        {
+            Console.Write($"Ingrese la fecha de vencimiento del producto \" {nombre} \"\n (día/mes/año):");
+            string fechaInput = Console.ReadLine();
 
-        var pructo = new Producto(nombre, fechaVencimiento);
-        VencimientoMensaje(pructo);
+            esDatoValido = DateTime.TryParse(fechaInput, out fechaVencimientoInput);
+            if (!esDatoValido)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("¡¡¡ERROR!!! ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Formato de fecha no válido o fecha imposible. Por favor, ingrésala correctamente (ej: AAAA-MM-DD o DD/MM/AAAA).");
+                Console.ResetColor();
+            }
+
+        } while (!esDatoValido);
+
+
+        var producto = new Producto(nombre, fechaVencimientoInput);
+        VencimientoMensaje(producto);
 
 
 
@@ -53,17 +66,22 @@ class Program
     {
         DateTime fechaActual = DateTime.Now;
         DateTime fechaVenProducto = producto.FechaVencimiento;
-        if (vencimiento(producto.FechaVencimiento))
+        bool estaVencido = vencimiento(producto);
+        if (estaVencido)
         {
+            Console.WriteLine("\n---------------------------------------------");
             Console.WriteLine($"El producto {producto.Nombre} está vencido.");
-            Console.WriteLine($"La fecha de vencimiento es: {fechaVenProducto.Day}/{fechaVenProducto.Month}/{fechaVenProducto.Year}");
-            Console.WriteLine($"La fecha actual es: {fechaActual.Day}/{fechaActual.Month}/{fechaActual.Year}");
+            Console.WriteLine("---------------------------------------------");
+            Console.WriteLine($"\nLa fecha de vencimiento es: {fechaVenProducto.Day}/{fechaVenProducto.Month}/{fechaVenProducto.Year}");
+            Console.WriteLine($"La fecha actual es: {fechaActual.Day}/{fechaActual.Month}/{fechaActual.Year}\n");
         }
         else
         {
+            Console.WriteLine("\n---------------------------------------------");
             Console.WriteLine($"El producto {producto.Nombre} NO está vencido.");
-            Console.WriteLine($"La fecha de vencimiento es: {fechaVenProducto.Day}/{fechaVenProducto.Month}/{fechaVenProducto.Year}");
-            Console.WriteLine($"La fecha actual es: {fechaActual.Day}/{fechaActual.Month}/{fechaActual.Year}");
+            Console.WriteLine("---------------------------------------------");
+            Console.WriteLine($"\nLa fecha de vencimiento es: {fechaVenProducto.Day}/{fechaVenProducto.Month}/{fechaVenProducto.Year}");
+            Console.WriteLine($"La fecha actual es: {fechaActual.Day}/{fechaActual.Month}/{fechaActual.Year}\n");
         }
     }
 
