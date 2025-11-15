@@ -4,10 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        //Console.Write("Cuantos vehiculos desea registrar?: ");
-        //int numRegistros = int.Parse(Console.ReadLine());
-        // Vehiculo[] vehiculos = new Vehiculo[numRegistros];
-        //registrarVehiculo(vehiculos);
+
 
         Vehiculo[] vehiculos = new Vehiculo[15];
 
@@ -164,6 +161,10 @@ class Program
         );
 
 
+        // Console.Write("Cuantos vehiculos desea registrar?: ");
+        // int numRegistros = int.Parse(Console.ReadLine());
+        // Vehiculo[] vehiculos = new Vehiculo[numRegistros];
+        // registrarVehiculo(vehiculos);
 
         mostrarListaRegistroGeneral(vehiculos);
         mostrarListaRegistroPorTipo(vehiculos);
@@ -176,7 +177,7 @@ class Program
     private static void registrarVehiculo(Vehiculo[] vehiculos)
     {
         bool correcto;
-        int cilindrada, modelo;
+        int cilindrada, modelo, tipoEleccion;
         string marca, tipo, placa;
         DateTime fechaRegistro;
         for (int i = 0; i < vehiculos.Length; i++)
@@ -205,17 +206,39 @@ class Program
             } while (!correcto);
             do
             {
-                Console.Write("Tipo (camioneta, motocicleta, vagoneta, ): ");
-                tipo = Console.ReadLine().ToUpper();
-                if (!(tipo == "CAMIONETA" || tipo == "MOTOCICLETA" || tipo == "VAGONETA"))
+                Console.Write("Tipo (vagoneta(1), motocicleta(2), automóvil(3), camioneta(4)): ");
+                correcto = int.TryParse(Console.ReadLine(), out tipoEleccion);
+                if (correcto && tipoEleccion > 0 && tipoEleccion < 5)
                 {
-                    Console.WriteLine("INGRESE UN VALOR VALIDO, INTENTE DE NUEVO");
-                    correcto = false;
-
+                    switch (tipoEleccion)
+                    {
+                        case 1:
+                            tipo = "VAGONETA";
+                            correcto = true;
+                            break;
+                        case 2:
+                            tipo = "MOTOCICLETA";
+                            correcto = true;
+                            break;
+                        case 3:
+                            tipo = "AUTOMÓVIL";
+                            correcto = true;
+                            break;
+                        case 4:
+                            tipo = "CAMIONETA";
+                            correcto = true;
+                            break;
+                        default:
+                            correcto = false;
+                            tipo = "";
+                            break;
+                    }
                 }
                 else
                 {
-                    correcto = true;
+                    Console.WriteLine("Ingresa un tipo valido");
+                    correcto = false;
+                    tipo = "";
                 }
             } while (!correcto);
             Console.Write("Placa: ");
@@ -252,46 +275,41 @@ class Program
 
     private static void mostrarListaRegistroPorTipo(Vehiculo[] vehiculos)
     {
-        Console.WriteLine("\n\n\t\t--- LISTA DE VEHÍCULOS REGISTRADOS POR TIPO---");
-
-        Console.WriteLine("\n\n\t\t\t--- LISTA DE VEHÍCULOS TIPO VAGONETA---");
-        Console.WriteLine($"\n{"Marca",10}{"Modelo",8}{"F. Reg.",15}{"Tipo",15}{"Placa",15}{"Cilindrada",15}");
-        Console.WriteLine("==================================================================================");
-        foreach (var vehiculo in vehiculos)
+        int tipoEleccion = 0;
+        string? tipo = string.Empty;
+        for (int i = 0; i < 4; i++)
         {
-            if (vehiculo.Tipo == "VAGONETA")
+            tipoEleccion++;
+            switch (tipoEleccion)
             {
-                string fechaFormato = vehiculo.FechaRegistro.ToString("dd-MM-yyyy");
-                Console.WriteLine($"{vehiculo.Marca,10}{vehiculo.Modelo,8}{fechaFormato,15}{vehiculo.Tipo,15}{vehiculo.Placa,15}{vehiculo.Cilindrada,15}");
+                case 1:
+                    tipo = "CAMIONETA";
+                    break;
+                case 2:
+                    tipo = "MOTOCICLETA";
+                    break;
+                case 3:
+                    tipo = "AUTOMÓVIL";
+                    break;
+                case 4:
+                    tipo = "VAGONETA";
+                    break;
             }
-        }
 
-        Console.WriteLine("\n\n\t\t\t--- LISTA DE VEHÍCULOS TIPO MOTOCICLETA---");
-        Console.WriteLine($"\n{"Marca",10}{"Modelo",8}{"F. Reg.",15}{"Tipo",15}{"Placa",15}{"Cilindrada",15}");
-        Console.WriteLine("==================================================================================");
+            Console.WriteLine($"\n\n\t\t\t--- LISTA DE VEHÍCULOS TIPO {tipo}---");
+            Console.WriteLine($"\n{"Marca",10}{"Modelo",8}{"F. Reg.",15}{"Tipo",15}{"Placa",15}{"Cilindrada",15}");
+            Console.WriteLine("==================================================================================");
 
-        foreach (var vehiculo in vehiculos)
-        {
-            if (vehiculo.Tipo == "MOTOCICLETA")
+            foreach (var vehiculo in vehiculos)
             {
-                string fechaFormato = vehiculo.FechaRegistro.ToString("dd-MM-yyyy");
-                Console.WriteLine($"{vehiculo.Marca,10}{vehiculo.Modelo,8}{fechaFormato,15}{vehiculo.Tipo,15}{vehiculo.Placa,15}{vehiculo.Cilindrada,15}");
-            }
-        }
-
-        Console.WriteLine("\n\n\t\t\t--- LISTA DE VEHÍCULOS TIPO CAMIONETA---");
-        Console.WriteLine($"\n{"Marca",10}{"Modelo",8}{"F. Reg.",15}{"Tipo",15}{"Placa",15}{"Cilindrada",15}");
-        Console.WriteLine("==================================================================================");
-        foreach (var vehiculo in vehiculos)
-        {
-            if (vehiculo.Tipo == "CAMIONETA")
-            {
-                string fechaFormato = vehiculo.FechaRegistro.ToString("dd-MM-yyyy");
-                Console.WriteLine($"{vehiculo.Marca,10}{vehiculo.Modelo,8}{fechaFormato,15}{vehiculo.Tipo,15}{vehiculo.Placa,15}{vehiculo.Cilindrada,15}");
+                if (vehiculo.Tipo == tipo)
+                {
+                    string fechaFormato = vehiculo.FechaRegistro.ToString("dd-MM-yyyy");
+                    Console.WriteLine($"{vehiculo.Marca,10}{vehiculo.Modelo,8}{fechaFormato,15}{vehiculo.Tipo,15}{vehiculo.Placa,15}{vehiculo.Cilindrada,15}");
+                }
             }
         }
     }
-
 
     private static void intercambiar(ref Vehiculo vehiculo1, ref Vehiculo vehiculo2)
     {
@@ -310,7 +328,7 @@ class Program
             for (int i = 0; i < limite; i++)
             {
 
-                if (vehiculos[i].Modelo > vehiculos[i + 1].Modelo)
+                if (vehiculos[i].Modelo < vehiculos[i + 1].Modelo)
                 {
                     intercambiar(ref vehiculos[i], ref vehiculos[i + 1]);
                     hayIntercambio = true;
