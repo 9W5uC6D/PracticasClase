@@ -1,4 +1,4 @@
-﻿namespace proyectoRegistroVehiculo;
+namespace oyectoRegistroVehiculo;
 
 class Program
 {
