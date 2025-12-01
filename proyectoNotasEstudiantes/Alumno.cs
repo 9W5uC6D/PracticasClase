@@ -8,5 +8,6 @@ class Alumno
     {
         Nombre = nombre;
         ListaDeNotas = new List<int>();
+        NotaFinal = 0;
     }
 }

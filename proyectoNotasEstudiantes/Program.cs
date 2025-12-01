@@ -3,11 +3,12 @@
 class Program
 {
     private static Random r;
-    private static int semilla;
+    private static int numObjetosRandom;
 
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+      List<Alumno> listaDeAlumnos = new List<Alumno>();
+      
     }
 
     public static void generarOjetoRandom()
