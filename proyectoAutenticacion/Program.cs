@@ -4,34 +4,87 @@ class Program
 {
     static void Main(string[] args)
     {
+        //LISTA DE EMPLEADOS
         List<Empleado> listaDeEmpleados = new List<Empleado>();
 
-        //AGREGAR EMPLEADOS
-        listaDeEmpleados.Add(new Empleado(100, "Juanito"));
-        listaDeEmpleados.Add(new Empleado(200, "Adrian"));
 
-        //AGREGAR ROL A EMPLEADOS
-        foreach (Empleado empleado in listaDeEmpleados)
+        //AGREGAR DATOS A LA LISTA ---> RADLINE()
+        Empleado empleado = null;
+        Usuario usuario = null;
+        Rol rol = null;
+        bool terminar;
+        do
         {
-            if (empleado.Nombre == "Juanito") empleado.ListaDeRol.Add(new Rol(1111, "tipo1"));
+            terminar = true;
+            Console.WriteLine("\nAGREGAR DATOS DE EMPLEADO");
+            Console.Write("CI: ");
+            int ci = int.Parse(Console.ReadLine());
+            Console.Write("Nombre: ");
+            string nombre = Console.ReadLine();
+            empleado = new Empleado(ci, nombre);
+            listaDeEmpleados.Add(empleado);
+            Console.Write("\nAGREGAR USUARIO AL EMPLEADO? (S/N) ");
+            string p = Console.ReadLine().ToLower();
+            if (p == "s")
+            {
+                do
+                {
+                    Console.Write("Nick: ");
+                    string nick = Console.ReadLine();
+                    Console.Write("Password: ");
+                    string password = Console.ReadLine();
+                    usuario = new Usuario(nick, password);
+                    empleado.ListaDeUsuarios.Add(usuario);
+                    Console.Write("\nAGREGAR OTRO USUARIO AL EMPLEADO? (S/N) ");
+                    p = Console.ReadLine().ToLower();
+                } while (p == "s");
+                Console.Write("\nAGREGAR ROL(ES) AL EMPLEADO? (S/N) ");
+                p = Console.ReadLine().ToLower();
+                if (p == "s")
+                {
+                    do
+                    {
+                        Console.Write("Codigo Rol: ");
+                        int codigoRol = int.Parse(Console.ReadLine());
+                        Console.Write("Descripcion: ");
+                        string descripcion = Console.ReadLine();
+                        rol = new Rol(codigoRol, descripcion);
+                        usuario.ListaDeRol.Add(rol);
+                        Console.Write("\nAGREGAR OTRO ROL AL EMPLEADO? (S/N) ");
+                        p = Console.ReadLine().ToLower();
+                    } while (p == "s");
+                }
+            }
+            Console.Write("\nAGREGAR OTRO EMPLEADO? (S/N) ");
+            p = Console.ReadLine().ToLower();
+            if (p == "n")
+            {
+                terminar = false;
+            }
+        } while (terminar);
 
-            else if (empleado.Nombre == "Adrian") empleado.ListaDeRol.Add(new Rol(2222, "tipo2"));
 
-
-        }
-
-        //MOSTRAR LISTA DE EMPLEADO (CI  - NOMBRE - ROL)
-        foreach (Empleado empleado in listaDeEmpleados)
+        //MOSTRAR LISTA DE EMPLEADO(CI  -NOMBRE - ROL)
+        foreach (Empleado e in listaDeEmpleados)
         {
             Console.WriteLine($"\n-------------------------------------------");
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("EMPLEADO");
-            Console.WriteLine($"CI: {empleado.Ci}");
-            Console.WriteLine($"Nombre: {empleado.Nombre}");
-            Console.WriteLine("ROL DEL EMPLEADO");
-            foreach (Rol rol in empleado.ListaDeRol)
+            Console.ResetColor();
+            Console.WriteLine($"Nombre: {e.Nombre}\tCI: {e.Ci}");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("USUARIO/S DEL EMPLEADO");
+            Console.ResetColor();
+            foreach (Usuario u in e.ListaDeUsuarios)
             {
-                Console.WriteLine($"Codigo:{rol.CodigoRol}\t\tDescripcion: {rol.Descripcion}");
-                Console.WriteLine($"-------------------------------------------");
+                Console.WriteLine($"Codigo:{u.Nick}\tDescripcion: {u.Nick}");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("ROL(ES) DEL USUARIO");
+                Console.ResetColor();
+                foreach (Rol r in u.ListaDeRol)
+                {
+                    Console.WriteLine($"Codigo:{r.CodigoRol}\tDescripcion: {r.Descripcion}");
+                }
             }
         }
     }
